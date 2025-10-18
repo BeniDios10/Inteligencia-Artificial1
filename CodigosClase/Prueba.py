@@ -26,7 +26,7 @@ print("leyendo imagenes de ", imgpath)
 
 for root, dirnames, filenames in os.walk(imgpath):
     for filename in filenames:
-        if re.search("\.(jpg|jpeg|png|bmp|tiff)$", filename):
+        if re.search(r"\.(jpg|jpeg|png|bmp|tiff)$", filename):
             cant = cant + 1
             filepath = os.path.join(root, filename)
             image = plt.imread(filepath)
@@ -123,7 +123,7 @@ print(train_X.shape, valid_X.shape, train_label.shape, valid_label.shape)
 # ----------------------------------------------------------------
 
 INIT_LR = 1e-3
-epochs = 20 # Aumentado para mejor entrenamiento
+epochs = 70 # Aumentado para mejor entrenamiento
 batch_size = 64
 
 sport_model = Sequential()
@@ -150,6 +150,12 @@ sport_model.compile(
     optimizer=keras.optimizers.Adagrad(learning_rate=INIT_LR),
     metrics=['accuracy']
 )
+# entrenamiento
+sport_train = sport_model.fit(train_X, train_label, batch_size=batch_size,epochs=epochs,verbose=1,validation_data=(valid_X, valid_label))
+#guardamos el entrenamiento
+sport_model.save("sports_mnist_2.h5")
+# evaluar la red
+test_eval = sport_model.evaluate(test_X, test_Y_one_hot,verbose=1)
 
 # Entrenar el modelo
 history = sport_model.fit(
