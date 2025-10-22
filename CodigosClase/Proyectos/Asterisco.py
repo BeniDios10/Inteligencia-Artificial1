@@ -110,17 +110,17 @@ def reconstruir_camino(padres, actual, dibujar):
         actual = padres[actual]
         if not actual.es_inicio():
             camino.append(actual)
-    
-    # 2. Invertir la lista para ir del INICIO al FIN
-    camino.reverse() 
-    
+
+    # 2. la lista para ir del INICIO al FIN
+    camino.reverse()
+
     # 3. Dibujar el camino en orden
     for nodo in camino:
         nodo.hacer_camino()
         dibujar()
         pygame.time.delay(30) # Retardo para visualizar el recorrido
 
-# Algoritmo A* (RALENTIZADO)
+# Algoritmo A*
 def algoritmo_a_star(dibujar, grid, inicio, fin):
     contador = 0
     open_set = PriorityQueue()
@@ -179,7 +179,7 @@ def algoritmo_a_star(dibujar, grid, inicio, fin):
     return False # Fallo, el camino no existe
 
 # --------------------------------------------------------------------------------------
-# --- Funciones de Pygame (Sin cambios) ---
+# --- Funciones de Pygame ---
 
 def crear_grid(filas, ancho):
     grid = []
