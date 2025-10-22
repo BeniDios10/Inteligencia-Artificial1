@@ -114,14 +114,14 @@ def reconstruir_camino(padres, actual, dibujar):
     # 2. la lista para ir del INICIO al FIN
     camino.reverse()
 
-    # 3. Dibujar el camino en orden
+    # 3. Dibujar el camino
     for nodo in camino:
         nodo.hacer_camino()
         dibujar()
         pygame.time.delay(30) # Retardo para visualizar el recorrido
 
 # Algoritmo A*
-def algoritmo_a_star(dibujar, grid, inicio, fin):
+def a_asterisco(dibujar, grid, inicio, fin):
     contador = 0
     open_set = PriorityQueue()
     open_set.put((0, contador, inicio))
@@ -270,7 +270,7 @@ def main(ventana, ancho):
                         for nodo in fila:
                             nodo.actualizar_vecinos(grid)
 
-                    algoritmo_a_star(lambda: dibujar(ventana, grid, FILAS, ancho), grid, inicio, fin)
+                    a_asterisco(lambda: dibujar(ventana, grid, FILAS, ancho), grid, inicio, fin)
                     algoritmo_iniciado = False
                 
                 # Restablecer el Tablero (Tecla 'C' o 'R')
