@@ -88,8 +88,8 @@ if __name__ == "__main__":
 
     # 2. DEFINIR LA RUTA DE LA IMAGEN QUE QUIERES PROBAR
     # EJEMPLO: Asegúrate de que esta imagen exista
-    #ruta_nueva_imagen = os.path.join(os.getcwd(), 'sportimages', 'futbol', 'futbol_0001.jpg') 
-    ruta_nueva_imagen = os.path.join(os.getcwd(), 'play.jpg')
+    ruta_nueva_imagen = os.path.join(os.getcwd(), 'sportimages', 'futbol', 'futbol_0001.jpg') 
+    #ruta_nueva_imagen = os.path.join(os.getcwd(), 'play.jpg')
 
     # 3. Ejecutar la clasificación
     clasificar_imagen(ruta_nueva_imagen, modelo_cargado, DEPORTES)
