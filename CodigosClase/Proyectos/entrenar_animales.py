@@ -1,6 +1,5 @@
 import os
 import re
-import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.model_selection import train_test_split
 from keras.utils import to_categorical
@@ -10,13 +9,15 @@ import keras
 from PIL import Image
 
 # ----------------------------------------------------------------
-# PASO 1: Cargar las imágenes
+# PASO 1: Cargar y Procesar Imágenes (Versión Blindada)
 # ----------------------------------------------------------------
 
-# Asumimos que la carpeta se llama "CNN_animales" basada en tu captura
+# Ajusta esto si tu carpeta se llama diferente, pero según tu foto es esta:
 dirname = os.path.join(os.getcwd(), 'CNN_animales')
 imgpath = dirname + os.sep
 
+# Configuración
+IMG_SIZE = (64, 64)
 images = []
 directories = []
 dircount = []
@@ -26,80 +27,83 @@ cant = 0
 print("Leyendo imagenes de: ", imgpath)
 
 for root, dirnames, filenames in os.walk(imgpath):
-    # IMPORTANTE: Ordenar directorios para asegurar que las etiquetas 0,1,2... 
-    # siempre correspondan al mismo animal en orden alfabético.
+    # Ordenamos carpetas alfabéticamente para que las etiquetas sean consistentes
     dirnames.sort()
     
     for filename in filenames:
         if re.search(r"\.(jpg|jpeg|png|bmp|tiff)$", filename):
-            cant = cant + 1
             filepath = os.path.join(root, filename)
             
-            # Forzar lectura correcta incluso si hay problemas de formato
             try:
-                image = plt.imread(filepath)
-                # Validar que la imagen tenga 3 canales (evitar grises que rompen el código)
-                if len(image.shape) == 3:
-                    images.append(image)
-                else:
-                    print(f"Saltando imagen en escala de grises: {filename}")
-                    cant -= 1 # Ajustar contador si saltamos
-            except:
-                print(f"Error leyendo archivo: {filename}")
-                cant -= 1
+                # CAMBIO CLAVE: Usamos PIL directo. 
+                # .convert('RGB') arregla los PNGs transparentes y los Grayscale de golpe.
+                img_pil = Image.open(filepath).convert('RGB')
+                
+                # Redimensionamos de una vez
+                img_pil = img_pil.resize(IMG_SIZE)
+                
+                # Convertimos a arreglo y guardamos
+                images.append(np.array(img_pil))
+                
+                cant += 1
+                
+            except Exception as e:
+                print(f"Archivo corrupto o ilegible: {filename} - Error: {e}")
 
             if cant % 100 == 0:
                 print(f"Procesando... {cant}", end="\r")
 
     if prevRoot != root:
-        print(root, cant)
-        prevRoot = root
-        directories.append(root)
-        dircount.append(cant)
-        cant = 0
+        # Solo agregar a la lista si encontramos archivos en esa carpeta
+        if cant > 0: 
+            print(f"\nCarpeta finalizada: {root} -> {cant} imagenes")
+            directories.append(root)
+            dircount.append(cant)
+            prevRoot = root
+            cant = 0
 
-dircount.append(cant)
-dircount = dircount[1:]
-print('Directorios leidos: ', len(directories))
-print("Imagenes en cada directorio", dircount)
-print('Suma Total de imagenes en subdirs:', sum(dircount))
+# Manejo del último directorio
+if cant > 0:
+    dircount.append(cant)
+# El primer elemento de dircount suele ser 0 si la raiz no tenia fotos, lo limpiamos si es necesario
+if len(dircount) > len(directories):
+    dircount = dircount[1:]
+
+print('\n--------------------------------')
+print('Directorios leidos:', len(directories))
+print("Imagenes por directorio:", dircount)
+print('Total imagenes:', sum(dircount))
+print('--------------------------------')
 
 # ----------------------------------------------------------------
-# PASO 2: Redimensionar y Etiquetas
+# PASO 2: Crear Etiquetas
 # ----------------------------------------------------------------
-
-# Mantenemos 64x64 como pediste (aunque para animales es pequeño)
-IMG_SIZE = (64, 64) 
-
-resized_images = []
-for image in images:
-    img = Image.fromarray(image)
-    img = img.resize(IMG_SIZE)
-    resized_images.append(np.array(img))
-
-images = np.array(resized_images) # Convertir a numpy array directo
 
 labels = []
 indice = 0
 for cantidad in dircount:
     for i in range(cantidad):
         labels.append(indice)
-    indice = indice + 1
+    indice += 1
 
-# Recuperar nombres de las clases
+# Recuperar nombres de las clases para tu referencia
 clases_nombres = []
-indice = 0
 for directorio in directories:
     name = directorio.split(os.sep)
-    print(f"Clase {indice}: {name[-1]}")
     clases_nombres.append(name[-1])
-    indice = indice + 1
 
-print("\nIMPORTANTE: Copia esta lista para tu script de predicción:")
-print(clases_nombres)
+print("Clases detectadas:", clases_nombres)
 
 y = np.array(labels)
-X = images.astype('float32') # Asegurar tipo float para normalizar
+X = np.array(images, dtype=np.float32) # Convertimos la lista de arrays en un super array
+
+# Validar que X y y tengan el mismo largo
+if len(X) != len(y):
+    print(f"¡ALERTA! Desajuste de dimensiones. X: {len(X)}, y: {len(y)}")
+    # Esto no debería pasar con la lógica nueva, pero por seguridad:
+    min_len = min(len(X), len(y))
+    X = X[:min_len]
+    y = y[:min_len]
 
 # Clases únicas
 classes = np.unique(y)
@@ -123,11 +127,11 @@ test_Y_one_hot = to_categorical(test_Y, num_classes=nClasses)
 train_X, valid_X, train_label, valid_label = train_test_split(train_X, train_Y_one_hot, test_size=0.2, random_state=13)
 
 # ----------------------------------------------------------------
-# PASO 4: Modelo (Corregido)
+# PASO 4: Modelo 
 # ----------------------------------------------------------------
 
 INIT_LR = 1e-3
-epochs = 50 # Bajé un poco las épocas porque el dataset puede ser menor
+epochs = 50 
 batch_size = 64
 
 sport_model = Sequential()
@@ -153,9 +157,7 @@ sport_model.compile(
     metrics=['accuracy']
 )
 
-# --- AQUI ESTABA EL ERROR ---
-# Solo entrenamos UNA VEZ y guardamos el resultado en 'history' para poder graficar si quisieras
-print("Iniciando entrenamiento...")
+print("\nIniciando entrenamiento...")
 history = sport_model.fit(
     train_X, 
     train_label, 
@@ -168,7 +170,7 @@ history = sport_model.fit(
 # Guardar el modelo
 model_name = "animales_model.h5"
 sport_model.save(model_name)
-print(f"\nModelo guardado como: {model_name}")
+print(f"\nModelo guardado exitosamente como: {model_name}")
 
 # Evaluar
 test_eval = sport_model.evaluate(test_X, test_Y_one_hot, verbose=1)
