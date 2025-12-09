@@ -65,4 +65,4 @@ pygame.quit()
 # Guardar en CSV
 df = pd.DataFrame(datos, columns=["distancia", "velocidad", "salto"])
 df.to_csv("datos_juego.csv", index=False)
-print("Datos guardados en 'datos_juego.csv'. ¡Listo para entrenar!")
+print("Datos guardados en 'datos_juego.csv'. Listo para entrenar")
