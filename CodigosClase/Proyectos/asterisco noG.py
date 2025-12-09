@@ -2,33 +2,37 @@ import pygame
 import math
 from queue import PriorityQueue
 
-# Inicializar Pygame antes de usar sus funciones de tiempo o visualización
+# Inicializar Pygame
 pygame.init()
 
 # Configuraciones iniciales
 ANCHO_VENTANA = 800
 VENTANA = pygame.display.set_mode((ANCHO_VENTANA, ANCHO_VENTANA))
-pygame.display.set_caption("Visualización de Algoritmo A. PROYECTO UNIDAD 1*")
+pygame.display.set_caption("Visualización A* - Modo Dark Neon")
 
-# Colores (RGB)
-BLANCO = (255, 255, 255)
-NEGRO = (0, 0, 0)
-GRIS = (128, 128, 128)
-VERDE = (0, 255, 0)      # Abierto (Candidato a explorar)
-ROJO = (255, 0, 0)       # Cerrado (Ya explorado)
-AZUL = (0, 0, 255)       # Camino (Ruta final)
-NARANJA = (255, 165, 0)  # Inicio
-PURPURA = (128, 0, 128)  # Fin
+# --- NUEVA PALETA DE COLORES (ESTÉTICA) ---
+# Fondo oscuro para contraste
+FONDO = (28, 28, 30)          # Gris muy oscuro (casi negro)
+LINEAS = (50, 50, 50)         # Gris sutil para la cuadrícula
+
+# Elementos interactivos (Colores Neón/Pastel)
+PARED = (200, 200, 200)       # Blanco/Gris claro para obstáculos
+INICIO = (255, 107, 107)      # Rojo/Coral suave (Start)
+FIN = (78, 205, 196)          # Turquesa/Cyan (End)
+
+# Estados del algoritmo
+CANDIDATO = (255, 230, 109)   # Amarillo (Open Set - Nodos por visitar)
+VISITADO = (85, 98, 112)      # Azul grisáceo oscuro (Closed Set - Ya explorados)
+CAMINO = (199, 244, 100)      # Verde Lima Brillante (El camino final)
 
 # --- Clase Nodo ---
 class Nodo:
     def __init__(self, fila, col, ancho, total_filas):
         self.fila = fila
         self.col = col
-        # CORRECCIÓN: X es la columna (horizontal), Y es la fila (vertical)
         self.x = col * ancho
         self.y = fila * ancho
-        self.color = BLANCO
+        self.color = FONDO # Inicia con el color de fondo
         self.ancho = ancho
         self.total_filas = total_filas
         self.vecinos = []
@@ -37,40 +41,40 @@ class Nodo:
         return self.fila, self.col
 
     def es_cerrado(self):
-        return self.color == ROJO
+        return self.color == VISITADO
 
     def es_abierto(self):
-        return self.color == VERDE
+        return self.color == CANDIDATO
 
     def es_pared(self):
-        return self.color == NEGRO
+        return self.color == PARED
 
     def es_inicio(self):
-        return self.color == NARANJA
+        return self.color == INICIO
 
     def es_fin(self):
-        return self.color == PURPURA
+        return self.color == FIN
 
     def restablecer(self):
-        self.color = BLANCO
+        self.color = FONDO
 
     def hacer_inicio(self):
-        self.color = NARANJA
+        self.color = INICIO
 
     def hacer_pared(self):
-        self.color = NEGRO
+        self.color = PARED
 
     def hacer_fin(self):
-        self.color = PURPURA
+        self.color = FIN
 
     def hacer_cerrado(self):
-        self.color = ROJO
+        self.color = VISITADO
     
     def hacer_abierto(self):
-        self.color = VERDE
+        self.color = CANDIDATO
 
     def hacer_camino(self):
-        self.color = AZUL
+        self.color = CAMINO
 
     def dibujar(self, ventana):
         pygame.draw.rect(ventana, self.color, (self.x, self.y, self.ancho, self.ancho))
@@ -95,32 +99,23 @@ class Nodo:
 # --------------------------------------------------------------------------------------
 # --- Funciones del Algoritmo A* ---
 
-# Heurística (Distancia de Manhattan)
 def h(p1, p2):
     x1, y1 = p1
     x2, y2 = p2
     return abs(x1 - x2) + abs(y1 - y2)
 
-# Reconstruir el camino (MODIFICADA para pintar del INICIO al FIN)
 def reconstruir_camino(padres, actual, dibujar):
     camino = []
-    
-    # 1. Rastrear el camino del FIN al INICIO
     while actual in padres:
         actual = padres[actual]
         if not actual.es_inicio():
             camino.append(actual)
-
-    # 2. la lista para ir del INICIO al FIN
     camino.reverse()
-
-    # 3. Dibujar el camino
     for nodo in camino:
         nodo.hacer_camino()
         dibujar()
-        pygame.time.delay(30) # Retardo para visualizar el recorrido
+        pygame.time.delay(30)
 
-# Algoritmo A*
 def a_asterisco(dibujar, grid, inicio, fin):
     contador = 0
     open_set = PriorityQueue()
@@ -146,14 +141,11 @@ def a_asterisco(dibujar, grid, inicio, fin):
         open_set_hash.remove(actual)
 
         if actual == fin:
-            # Llama a la función de reconstrucción (ahora pinta de Inicio a Fin)
             reconstruir_camino(padres, fin, dibujar)
-            
-            # Asegura que los puntos extremos se repinten al final (por si el camino los cubrió)
             inicio.hacer_inicio() 
             fin.hacer_fin()
-            dibujar() # Último redibujo
-            return True # Éxito
+            dibujar()
+            return True
 
         for vecino in actual.vecinos:
             g_score_temporal = g_score[actual] + 1 
@@ -171,12 +163,13 @@ def a_asterisco(dibujar, grid, inicio, fin):
                          vecino.hacer_abierto()
 
         dibujar()
-        pygame.time.delay(10) # Retardo de 10ms en cada paso de exploración
+        # Pequeña optimización visual: reduce delay si el grid es muy grande
+        pygame.time.delay(10) 
 
         if actual != inicio:
             actual.hacer_cerrado()
     
-    return False # Fallo, el camino no existe
+    return False
 
 # --------------------------------------------------------------------------------------
 # --- Funciones de Pygame ---
@@ -194,12 +187,13 @@ def crear_grid(filas, ancho):
 def dibujar_grid(ventana, filas, ancho):
     ancho_nodo = ancho // filas
     for i in range(filas):
-        pygame.draw.line(ventana, GRIS, (0, i * ancho_nodo), (ancho, i * ancho_nodo))
+        # Usamos el color LINEAS definido arriba
+        pygame.draw.line(ventana, LINEAS, (0, i * ancho_nodo), (ancho, i * ancho_nodo))
         for j in range(filas):
-            pygame.draw.line(ventana, GRIS, (j * ancho_nodo, 0), (j * ancho_nodo, ancho))
+            pygame.draw.line(ventana, LINEAS, (j * ancho_nodo, 0), (j * ancho_nodo, ancho))
 
 def dibujar(ventana, grid, filas, ancho):
-    ventana.fill(BLANCO)
+    ventana.fill(FONDO) # Llenamos con el color de fondo oscuro
     for fila in grid:
         for nodo in fila:
             nodo.dibujar(ventana)
@@ -215,8 +209,7 @@ def obtener_click_pos(pos, filas, ancho):
     return fila, col 
 
 def main(ventana, ancho):
-#PARA CAMBIAR TAMAÑO
-    FILAS = 10
+    FILAS = 10 # Aumenté ligeramente las filas para que se vea mejor el algoritmo
     grid = crear_grid(FILAS, ancho)
 
     inicio = None
@@ -234,8 +227,7 @@ def main(ventana, ancho):
             if algoritmo_iniciado:
                 continue
 
-            # Click izquierdo
-            if pygame.mouse.get_pressed()[0]:
+            if pygame.mouse.get_pressed()[0]: # Izquierdo
                 pos = pygame.mouse.get_pos()
                 fila, col = obtener_click_pos(pos, FILAS, ancho)
                 nodo = grid[fila][col]
@@ -247,11 +239,9 @@ def main(ventana, ancho):
                     fin = nodo
                     fin.hacer_fin()
                 elif nodo != fin and nodo != inicio:
-                    if not nodo.es_pared(): 
-                        nodo.hacer_pared()
+                    nodo.hacer_pared()
 
-            # Click derecho (Restablecer)
-            elif pygame.mouse.get_pressed()[2]: 
+            elif pygame.mouse.get_pressed()[2]: # Derecho
                 pos = pygame.mouse.get_pos()
                 fila, col = obtener_click_pos(pos, FILAS, ancho)
                 nodo = grid[fila][col]
@@ -261,9 +251,7 @@ def main(ventana, ancho):
                 elif nodo == fin:
                     fin = None
 
-            # Eventos de Teclado
             if event.type == pygame.KEYDOWN:
-                # Iniciar el Algoritmo A*
                 if event.key == pygame.K_SPACE and inicio and fin:
                     algoritmo_iniciado = True
                     for fila in grid:
@@ -271,9 +259,8 @@ def main(ventana, ancho):
                             nodo.actualizar_vecinos(grid)
 
                     a_asterisco(lambda: dibujar(ventana, grid, FILAS, ancho), grid, inicio, fin)
-                    algoritmo_iniciado = False
+                    # Nota: El algoritmo termina y se queda pintado, el usuario debe resetear manualmente con 'R'
                 
-                # Restablecer el Tablero (Tecla 'E' o 'R')
                 if event.key == pygame.K_e or event.key == pygame.K_r:
                     inicio = None
                     fin = None
