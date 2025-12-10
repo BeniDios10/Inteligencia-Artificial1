@@ -4,7 +4,7 @@ import joblib
 from tensorflow.keras.models import load_model
 
 # --- CONFIGURACIÓN: ELIGIR MODELO AQUÍ ---
-MODO = "RED" # Cambiar a "ARBOL" o "RED" para probar cada uno
+MODO = "ARBOL" # Cambiar a "ARBOL" o "RED" para probar cada uno
 # -------------------------------------------
 
 # Cargar el modelo seleccionado
