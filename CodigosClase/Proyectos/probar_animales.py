@@ -68,6 +68,6 @@ if __name__ == "__main__":
     # CAMBIA ESTO POR LA RUTA DE TU IMAGEN DE PRUEBA
     # Puedes poner una ruta absoluta ejemplo: "C:/Users/TuUsuario/Desktop/foto_gato.jpg"
     # mi_imagen = "prueba.jpg" 
-    mi_imagen = "C:\\Users\\284\\Downloads\\gato.jpg"
+    mi_imagen = "C:\\Users\\284\\Downloads\\tortuga.jpg"
 
     clasificar_imagen(mi_imagen)
