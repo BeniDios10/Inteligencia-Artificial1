@@ -34,8 +34,7 @@ for root, dirnames, filenames in os.walk(imgpath):
         if re.search(r"\.(jpg|jpeg|png|bmp|tiff)$", filename):
             filepath = os.path.join(root, filename)
             
-            try:
-                # CAMBIO CLAVE: Usamos PIL directo. 
+            try: 
                 # .convert('RGB') arregla los PNGs transparentes y los Grayscale de golpe.
                 img_pil = Image.open(filepath).convert('RGB')
                 

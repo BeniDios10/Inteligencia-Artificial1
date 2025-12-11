@@ -6,7 +6,7 @@ from queue import PriorityQueue
 pygame.init()
 
 # Configuraciones iniciales
-ANCHO_VENTANA = 800
+ANCHO_VENTANA = 700
 VENTANA = pygame.display.set_mode((ANCHO_VENTANA, ANCHO_VENTANA))
 pygame.display.set_caption("Visualización de Algoritmo A*")
 
@@ -24,7 +24,6 @@ class Nodo:
     def __init__(self, fila, col, ancho, total_filas):
         self.fila = fila
         self.col = col
-        # CORRECCIÓN: x es columna (horizontal), y es fila (vertical)
         self.x = col * ancho
         self.y = fila * ancho
         self.color = BLANCO
@@ -203,7 +202,7 @@ def obtener_click_pos(pos, filas, ancho):
     return fila, col
 
 def main(ventana, ancho):
-    FILAS = 10 # MODIFICAR PARA HACER MÁS GRANDE O PEQUEÑO
+    FILAS = 11 # MODIFICAR PARA HACER MÁS GRANDE O PEQUEÑO
     grid = crear_grid(FILAS, ancho)
 
     inicio = None
