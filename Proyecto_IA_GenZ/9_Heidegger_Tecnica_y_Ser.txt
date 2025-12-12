@@ -1,0 +1,12 @@
+TITULO: La Pregunta por la Técnica en la Era del Big Data: Una lectura desde Heidegger
+AUTOR: Análisis Fenomenológico
+TEMAS: Martin Heidegger, Gestell, Desocultamiento, Recurso (Bestand).
+
+EL PELIGRO DEL "GESTELL" (ENMARCAMIENTO)
+Martin Heidegger argumentó que la esencia de la tecnología moderna no es algo "técnico", sino una forma de mirar el mundo: el "Gestell" o "Enmarcamiento". Bajo esta visión, la naturaleza y el ser humano dejan de tener valor en sí mismos y se revelan únicamente como "existencias" o "reservas" (Bestand) listas para ser explotadas.
+
+EL SER HUMANO COMO DATO (DATA-FICATION)
+En la era de la IA, la profecía de Heidegger se cumple radicalmente. El usuario de redes sociales no es visto por el algoritmo como un "Ser" (Dasein) con angustias y proyectos, sino como un conjunto de métricas extraíbles: ubicación, edad, tiempo de retención, historial de compras. El ser humano es transformado en "recurso" para alimentar el entrenamiento de modelos predictivos.
+
+EL OLVIDO DEL SER
+La tecnología promete "desocultar" la verdad (traer información a la luz), pero según Heidegger, este tipo de desocultamiento tecnológico oculta la esencia poética y misteriosa de la vida. Al reducir la experiencia humana a datos procesables, la IA "aplana" la existencia. La crisis de sentido en la Gen Z puede interpretarse como el resultado de vivir en un mundo tecnificado donde todo es calculable y nada es sagrado.

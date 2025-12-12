@@ -1,0 +1,14 @@
+TITULO: El Cerebro Hackeado: Mecanismos Neurobiológicos de la Dependencia Digital
+TIPO: Informe Científico-Técnico
+TEMAS: Dopamina, Refuerzo Intermitente, B.F. Skinner, Corteza Prefrontal.
+
+EL BUCLE DE DOPAMINA
+Las plataformas como TikTok utilizan el sistema de recompensa del cerebro. Cada video nuevo es una predicción de recompensa. Cuando el video es bueno, el cerebro libera dopamina. La anticipación de esta liberación es lo que impulsa el "scroll".
+
+REFUERZO INTERMITENTE VARIABLE (LA CAJA DE SKINNER)
+El diseño más adictivo no es dar premios siempre, sino darlos aleatoriamente. Al igual que una máquina tragamonedas, el usuario no sabe si el siguiente video será aburrido o increíblemente divertido. Esta incertidumbre (Variable Reward Schedule) maximiza la conducta compulsiva.
+B.F. Skinner demostró que este esquema es el más difícil de extinguir.
+
+LA CORTEZA PREFRONTAL Y LA AUTONOMÍA
+La corteza prefrontal es la encargada de la toma de decisiones racionales y el control de impulsos. En adolescentes y adultos jóvenes (Gen Z), esta zona aún está madurando. Los algoritmos "bypass" (evaden) la corteza prefrontal y atacan directamente al sistema límbico (emocional).
+Conclusión: Pedirle a un adolescente que tenga "fuerza de voluntad" frente a un supercomputador diseñado por miles de ingenieros para hackear su dopamina es una batalla desigual. La autonomía biológica está comprometida.

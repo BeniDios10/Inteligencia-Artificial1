@@ -1,0 +1,11 @@
+ENTREVISTA: SUJETO 1 (22 AÑOS, ESTUDIANTE DE DISEÑO)
+Entrevistador: ¿Cómo te sientes respecto al futuro?
+Sujeto 1: "Siento que no tiene sentido planear. Veo a mis papás que trabajaron 30 años en lo mismo y eso ya no existe. Además, con la IA generativa (Midjourney), siento que todo lo que estoy estudiando va a ser obsoleto antes de que me gradúe. Me da una crisis de identidad tremenda. Si una máquina puede pintar mejor que yo en 3 segundos, ¿quién soy yo? ¿Cuál es mi valor?"
+
+ENTREVISTA: SUJETO 2 (19 AÑOS, CREADOR DE CONTENIDO)
+Entrevistador: ¿Te sientes libre en redes sociales?
+Sujeto 2: "Sí y no. Puedo publicar lo que quiera, pero si quiero que alguien lo vea, tengo que seguir las reglas del algoritmo. Tengo que usar el audio en tendencia, hacer el baile de moda, postear a las 6 PM. Si hago algo 'auténtico' pero que no sigue las reglas, nadie lo ve. Así que al final, mi 'autenticidad' es un guion escrito por la app."
+
+ENTREVISTA: SUJETO 3 (24 AÑOS, PROGRAMADOR)
+Entrevistador: ¿Qué opinas de la privacidad?
+Sujeto 3: "Ya la di por perdida. Sé que me escuchan, sé que saben dónde estoy. Es el precio que pago por la comodidad. Prefiero que Google Maps me diga dónde hay tráfico a tener privacidad. Hemos vendido nuestra libertad por conveniencia. Es un trato faustiano, pero todos lo firmamos."

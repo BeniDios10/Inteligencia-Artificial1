@@ -1,0 +1,16 @@
+TITULO: Mecanismos de Control: Capitalismo de Vigilancia y Cajas Negras
+AUTOR: Síntesis basada en Shoshana Zuboff y Cathy O'Neil
+TEMAS: Privacidad, Autonomía, Big Data, Sesgo Algorítmico.
+
+EL CAPITALISMO DE VIGILANCIA
+Shoshana Zuboff define el "Capitalismo de Vigilancia" como un nuevo orden económico que reclama la experiencia humana como materia prima gratuita para prácticas comerciales ocultas de extracción, predicción y ventas.
+La Generación Z no es el "cliente" de Google o TikTok; es la fuente de extracción.
+1. El Excedente Conductual: Los datos que cedemos (ubicación, voz, texto) se usan para mejorar el servicio, pero el "excedente" se usa para crear "productos predictivos".
+2. El Instrumentarismo: A diferencia del totalitarismo que usaba la violencia, el poder digital usa el "instrumentarismo" para moldear el comportamiento humano hacia fines comerciales sin que el sujeto se dé cuenta. El algoritmo no te obliga a comprar; crea el contexto emocional perfecto para que tú "decidas" comprar.
+
+ARMAS DE DESTRUCCIÓN MATEMÁTICA
+Cathy O'Neil advierte sobre los algoritmos como "Cajas Negras". Son opacos, escalables y destructivos.
+- Feedback Loop (Bucle de Retroalimentación): Si un algoritmo decide que un joven está deprimido basándose en sus búsquedas, le mostrará más contenido depresivo para maximizar su retención. Esto refuerza la depresión, lo que genera más datos de depresión, cerrando el ciclo. La autonomía se pierde porque el usuario deja de tener acceso a una realidad alternativa fuera de su bucle.
+
+LA ILUSIÓN DE LA ELECCIÓN
+Plataformas como Netflix o Spotify generan una "paradoja de la elección". Al sugerir contenido con un "98% de coincidencia", eliminan el esfuerzo de descubrimiento y el riesgo, elementos esenciales para la formación del gusto personal autónomo. El gusto se vuelve algorítmico, no humano. ¿Te gusta esa canción porque resuena contigo o porque el algoritmo sabía que la progresión de acordes te retendría 3 minutos?

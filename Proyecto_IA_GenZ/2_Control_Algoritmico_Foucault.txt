@@ -1,0 +1,12 @@
+TITULO: El Panóptico Digital: Biopolítica y Algoritmos
+AUTOR: Análisis basado en Michel Foucault y Shoshana Zuboff
+
+RESUMEN:
+Análisis sobre cómo la vigilancia algorítmica actual actualiza el concepto de panóptico de Foucault y elimina la autonomía humana.
+
+CONTENIDO:
+Michel Foucault describió el panóptico como una estructura donde el prisionero se sabe vigilado, pero no sabe cuándo, lo que lo lleva a auto-regular su comportamiento. Hoy, el algoritmo de recomendación (YouTube, TikTok, Netflix) funciona como un panóptico digital perfeccionado. No solo vigila, sino que predice y modifica la conducta.
+
+La "Biopolítica" moderna ya no controla cuerpos en fábricas, sino la atención en pantallas. Al recolectar datos biométricos y de comportamiento (tiempo de visualización, toques, scroll), las IAs construyen un perfil del usuario más preciso que el que el usuario tiene de sí mismo.
+
+Esto plantea un problema grave de autonomía: ¿Decide el usuario ver el siguiente video, o el diseño de "autoplay" y la selección algorítmica decidieron por él? Heidegger advertía sobre la tecnología convirtiendo al ser humano en un "recurso" (stock). En la economía de la atención, el ser humano es el recurso extraído. La libertad se vuelve una ilusión dentro de una jaula de opciones pre-seleccionadas por una inteligencia artificial cuyo único objetivo es maximizar el tiempo de permanencia en la plataforma, a costa del pensamiento crítico o el silencio mental.
