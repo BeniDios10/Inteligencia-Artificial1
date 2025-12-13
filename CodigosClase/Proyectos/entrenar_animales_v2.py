@@ -56,7 +56,7 @@ for indice, nombre_clase in enumerate(carpetas):
         if re.search(r"\.(jpg|jpeg|png|bmp|tiff)$", archivo, re.IGNORECASE):
             path_completo = os.path.join(ruta_clase, archivo)
             try:
-                # TRUCO: .convert('RGB') arregla PNGs y transparencias
+                #.convert('RGB') arregla PNGs y transparencias
                 img = Image.open(path_completo).convert('RGB')
                 img = img.resize(IMG_SIZE)
                 
