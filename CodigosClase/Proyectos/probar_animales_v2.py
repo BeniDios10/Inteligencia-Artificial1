@@ -47,7 +47,7 @@ def predecir(ruta_imagen):
 
 # --- EJECUTAR PRUEBA ---
 if __name__ == "__main__":
-    # CAMBIA STO POR EL NOMBRE DE TU FOTO
-    mi_foto = "C:\\Users\\284\\Desktop\\nuevas_imagenes\\imgdificl.jpg"
+    # CAMBIA ESTO
+    mi_foto = "C:\\Users\\284\\Desktop\\nuevas_imagenes\\Tortuga_cuello.jpg"
     
     predecir(mi_foto)

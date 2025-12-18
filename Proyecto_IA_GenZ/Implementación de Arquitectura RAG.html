@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe Técnico: Implementación RAG con AnythingLLM</title>
+    <!-- Importar Chart.js para gráficos de rendimiento -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Importar Mermaid para diagramas de arquitectura -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #0d47a1; /* Azul Ingeniería */
+            --accent-color: #2980b9;
+            --text-color: #2c3e50;
+            --bg-color: #eef2f3;
+            --paper-color: #ffffff;
+            --code-bg: #f4f6f7;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        /* Hoja A4 */
+        .page {
+            background: var(--paper-color);
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto 20px auto;
+            padding: 25mm;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        @media print {
+            body { background: none; margin: 0; }
+            .page { width: 100%; margin: 0; padding: 20mm; box-shadow: none; page-break-after: always; }
+            .no-print { display: none; }
+        }
+
+        h1 { font-size: 22pt; color: var(--primary-color); border-bottom: 3px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 20px; }
+        h2 { font-size: 16pt; color: var(--primary-color); margin-top: 30px; border-left: 5px solid var(--accent-color); padding-left: 10px; }
+        h3 { font-size: 13pt; color: #444; margin-top: 20px; font-weight: bold; }
+        p { text-align: justify; margin-bottom: 15px; }
+        
+        /* Bloques de código y logs */
+        .code-block {
+            background-color: var(--code-bg);
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 10pt;
+            color: #c0392b;
+            overflow-x: auto;
+        }
+
+        /* Tablas Técnicas */
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 10pt; }
+        th, td { border: 1px solid #bdc3c7; padding: 10px; text-align: left; }
+        th { background-color: var(--primary-color); color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+
+        /* Contenedores de Gráficos */
+        .chart-container { width: 85%; margin: 20px auto; text-align: center; }
+        .figure-caption { font-size: 9pt; color: #7f8c8d; margin-top: 5px; font-style: italic; text-align: center; }
+
+        /* Botón de descarga */
+        .btn-download {
+            position: fixed; top: 20px; right: 20px;
+            background: var(--primary-color); color: white;
+            padding: 12px 20px; border: none; border-radius: 5px;
+            font-weight: bold; cursor: pointer; z-index: 1000;
+        }
+        .btn-download:hover { background-color: #1a5276; }
+    </style>
+</head>
+<body>
+
+    <button class="btn-download no-print" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+
+    <!-- PORTADA TÉCNICA -->
+    <div class="page">
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h2 style="border:none; margin-bottom: 5px;">INSTITUTO TECNOLÓGICO DE MORELIA</h2>
+            <h3 style="margin-top:0; font-weight:normal;">Ingeniería En Sistemas Computacionales</h3>
+            <h3 style="margin-top:0; font-weight:normal;">Departamento de Sistemas y Computación</h3>
+        </div>
+        
+        <div style="text-align: center; margin-top: 100px;">
+            <h1 style="border:none; font-size: 28pt;">Implementación de Arquitectura RAG (Retrieval-Augmented Generation) para Análisis Semántico</h1>
+            <p style="font-size: 14pt;"><strong>Proyecto:</strong> La Generación Z y la Crisis de Sentido en la Era Digital</p>
+        </div>
+
+        <div class="chart-container" style="margin-top: 50px;">
+             <!-- Diagrama simple de red neuronal/nodos -->
+            <svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="50" r="20" fill="#0d47a1" />
+                <circle cx="50" cy="150" r="20" fill="#2980b9" />
+                <circle cx="150" cy="150" r="20" fill="#2980b9" />
+                <line x1="100" y1="50" x2="50" y2="150" stroke="#333" stroke-width="2"/>
+                <line x1="100" y1="50" x2="150" y2="150" stroke="#333" stroke-width="2"/>
+                <line x1="50" y1="150" x2="150" y2="150" stroke="#333" stroke-width="2"/>
+                <text x="100" y="55" fill="white" font-family="monospace" text-anchor="middle" font-size="10">LLM</text>
+                <text x="50" y="155" fill="white" font-family="monospace" text-anchor="middle" font-size="10">VDB</text>
+                <text x="150" y="155" fill="white" font-family="monospace" text-anchor="middle" font-size="10">RAG</text>
+            </svg>
+        </div>
+
+        <div style="position: absolute; bottom: 50px; left: 25mm;">
+            <p><strong>Nombre:</strong> Benítez Gómez Josué Miguel</p>
+            <p><strong>Materia:</strong> Inteligencia Artificial</p>
+            <p><strong>Herramientas:</strong> AnythingLLM, LanceDB, Local Inference</p>
+            <p><strong>Fecha:</strong> Diciembre 2025</p>
+        </div>
+    </div>
+
+    <!-- PÁGINA 1: ARQUITECTURA -->
+    <div class="page">
+        <h1>1. Resumen Ejecutivo</h1>
+        <p>
+            Este informe detalla la implementación técnica de un sistema de <strong>Generación Aumentada por Recuperación (RAG)</strong> diseñado para procesar y analizar un corpus de textos filosóficos y sociológicos. El objetivo principal fue superar la limitación de "ventana de contexto" de los LLMs tradicionales y mitigar alucinaciones mediante la inyección de contexto específico. Se utilizó <strong>AnythingLLM</strong> como orquestador, ejecutando la inferencia de manera local (On-Premise) para garantizar la privacidad de los datos y el control sobre el flujo de vectores.
+        </p>
+
+        <h1>2. Arquitectura del Sistema</h1>
+        <p>
+            El flujo de datos sigue el pipeline estándar de RAG, dividido en dos fases: Ingesta (ETL) e Inferencia.
+        </p>
+        
+        <div class="chart-container">
+            <div class="mermaid">
+                flowchart LR
+                    subgraph ETL [Fase de Ingesta]
+                        A[Corpus .txt/.pdf] -->|Limpieza| B(Chunking)
+                        B -->|Embedding Model| C{Vectorización}
+                        C -->|Vectores| D[(Vector Store - LanceDB)]
+                    end
+                    subgraph Inference [Fase de Inferencia]
+                        E[Usuario: Query] -->|Embedding| F(Vector Search)
+                        F <--> D
+                        F -->|Contexto Recuperado + Query| G[LLM Local]
+                        G --> H[Respuesta Generada]
+                    end
+            </div>
+            <div class="figure-caption">Figura 1: Pipeline de la arquitectura implementada en AnythingLLM.</div>
+        </div>
+
+        <h3>2.1 Componentes del Stack Tecnológico</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Componente</th>
+                    <th>Tecnología Seleccionada</th>
+                    <th>Justificación Técnica</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Orquestador</strong></td>
+                    <td>AnythingLLM Desktop</td>
+                    <td>Facilita la gestión de embeddings y la interfaz de chat sin requerir código boilerplate en Python/LangChain.</td>
+                </tr>
+                <tr>
+                    <td><strong>Base de Datos Vectorial</strong></td>
+                    <td>LanceDB (Integrada)</td>
+                    <td>Base de datos serverless de alto rendimiento, ideal para almacenamiento local de embeddings sin latencia de red.</td>
+                </tr>
+                <tr>
+                    <td><strong>Modelo de Inferencia</strong></td>
+                    <td>LLM Local (GGUF Format)</td>
+                    <td>Ejecución en CPU. Prioriza privacidad y cero coste operativo frente a APIs en la nube.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- PÁGINA 2: PROCESO E INGENIERÍA DE DATOS -->
+    <div class="page">
+        <h1>3. Ingeniería de Datos y Corpus</h1>
+        
+        <h3>3.1 Recolección y Preprocesamiento (ETL)</h3>
+        <p>
+            Se construyó un dataset sintético y recopilatorio de 13 documentos estructurados para maximizar la densidad semántica. A diferencia de un "web scraping" masivo, se optó por la <strong>Síntesis de Información</strong> para reducir el ruido en el espacio vectorial.
+        </p>
+        <ul>
+            <li><strong>Volumen de Datos:</strong> 13 Archivos de texto plano (.txt).</li>
+            <li><strong>Técnica de Limpieza:</strong> Eliminación de headers/footers irrelevantes y estandarización de codificación a UTF-8.</li>
+            <li><strong>Chunking:</strong> AnythingLLM aplicó una estrategia de segmentación automática (probablemente <em>recursive character splitter</em>) para dividir los textos en fragmentos procesables antes de la vectorización.</li>
+        </ul>
+
+        <h3>3.2 Proceso de Vectorización (Embeddings)</h3>
+        <p>
+            Al cargar los archivos ("Save and Embed"), el sistema transformó el texto natural en representaciones vectoriales numéricas. Estos vectores se almacenan en <strong>LanceDB</strong>. Cuando el usuario realiza una consulta, el sistema no busca palabras clave (keyword matching), sino <strong>proximidad semántica</strong> (cosine similarity) en el espacio vectorial multidimensional.
+        </p>
+
+        <h1>4. Métricas de Rendimiento e Inferencia</h1>
+        <p>
+            Se realizaron pruebas de estrés durante la generación del análisis. A continuación se presentan las métricas obtenidas directamente de los logs de ejecución del sistema.
+        </p>
+
+        <h3>4.1 Latencia y Throughput (CPU Bottleneck)</h3>
+        <p>
+            Las pruebas se ejecutaron en un entorno de hardware limitado (Laptop estándar sin GPU dedicada), lo que resultó en tiempos de inferencia elevados pero funcionales.
+        </p>
+
+        <!-- Tabla de Métricas -->
+        <div class="code-block">
+            > LOG DE EJECUCIÓN (Muestra)<br>
+            --------------------------------<br>
+            Query 1 (Diagnóstico): 142.419s total | 5.58 tokens/s<br>
+            Query 2 (Autonomía):   210.175s total | 5.39 tokens/s<br>
+            Query 3 (Conclusión):  150.773s total | 6.84 tokens/s<br>
+            --------------------------------<br>
+            Average Throughput:    ~5.93 tok/s
+        </div>
+
+        <div class="chart-container">
+            <canvas id="performanceChart" width="400" height="150"></canvas>
+            <div class="figure-caption">Figura 2: Comparativa de Tiempos de Respuesta vs. Complejidad del Prompt.</div>
+        </div>
+
+        <h3>4.2 Análisis del Cuello de Botella</h3>
+        <p>
+            La velocidad promedio de <strong>5.93 tokens/segundo</strong> indica que el modelo fue descargado ("offloaded") completamente a la <strong>CPU</strong>. En una implementación de producción, se requeriría aceleración por GPU (CUDA/Metal) para alcanzar velocidades de 80+ tok/s. Sin embargo, para fines académicos, la precisión del contenido se priorizó sobre la latencia.
+        </p>
+    </div>
+
+    <!-- PÁGINA 3: PROMPT ENGINEERING Y CONCLUSIONES -->
+    <div class="page">
+        <h1>5. Ingeniería de Prompts (Prompt Engineering)</h1>
+        <p>
+            Para garantizar que el modelo utilizara el contexto recuperado y no su "conocimiento base" pre-entrenado, se aplicaron técnicas avanzadas de prompting.
+        </p>
+
+        <h3>5.1 Estrategia: Role-Playing + Constraints</h3>
+        <p>
+            Se diseñó un <em>System Prompt</em> estricto para evitar alucinaciones. La estructura utilizada fue:
+        </p>
+        <div class="code-block">
+            [ROL]: Actúa como experto en Filosofía Contemporánea.<br>
+            [RESTRICCIÓN]: Basándote <strong>EXCLUSIVAMENTE</strong> en los documentos proporcionados.<br>
+            [TAREA]: Realizar análisis profundo (Diagnóstico, Identidad, Cansancio).<br>
+            [FORMATO]: Cita explícitamente los textos fuente.
+        </div>
+        <p>
+            <strong>Resultado:</strong> El modelo obedeció la restricción negativa ("no inventar"), limitándose a la información presente en los vectores recuperados de LanceDB, lo cual es crítico para la validez académica del sistema.
+        </p>
+
+        <h1>6. Conclusiones Técnicas</h1>
+        <ol>
+            <li><strong>Viabilidad del RAG Local:</strong> Se demostró que es posible ejecutar un sistema de análisis semántico complejo sin dependencias de nube (OpenAI/Anthropic), garantizando privacidad de datos a coste cero.</li>
+            <li><strong>Eficacia de Recuperación:</strong> El mecanismo de recuperación vectorial fue capaz de conectar conceptos abstractos ("vacío existencial") con datos concretos ("doomscrolling") dispersos en diferentes archivos, validando la calidad de los embeddings.</li>
+            <li><strong>Escalabilidad:</strong> La arquitectura actual basada en CPU presenta latencia alta (2-3 minutos por consulta). Para escalar el proyecto, se recomienda la migración a inferencia basada en GPU o el uso de modelos cuantizados más ligeros (ej. Llama-3-8B-Quantized).</li>
+        </ol>
+    </div>
+
+    <script>
+        // Inicializar Mermaid
+        mermaid.initialize({startOnLoad:true});
+
+        // Gráfico de Rendimiento
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        const performanceChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Prompt 1 (Filosofía)', 'Prompt 2 (Tecnología/Neuro)', 'Prompt 3 (Conclusiones)'],
+                datasets: [
+                    {
+                        label: 'Tiempo de Inferencia (Segundos)',
+                        data: [142.4, 210.1, 150.7],
+                        backgroundColor: 'rgba(41, 128, 185, 0.7)',
+                        borderColor: 'rgba(41, 128, 185, 1)',
+                        borderWidth: 1,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Velocidad (Tokens/s)',
+                        data: [5.58, 5.39, 6.84],
+                        type: 'line',
+                        borderColor: '#c0392b',
+                        borderWidth: 2,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        position: 'left',
+                        title: { display: true, text: 'Segundos (Menos es mejor)' }
+                    },
+                    y1: {
+                        beginAtZero: true,
+                        position: 'right',
+                        title: { display: true, text: 'Tokens/s (Más es mejor)' },
+                        grid: { drawOnChartArea: false }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
