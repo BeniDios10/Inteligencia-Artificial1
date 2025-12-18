@@ -48,7 +48,7 @@ def preguntar(pregunta):
     print("-" * 30)
 
 # Bucle de chat
-print("\n✅ ¡Tutor Qwen cargado! Escribe 'salir' para terminar.")
+print("\nTutor Qwen cargado. Escribe 'salir' para terminar.")
 while True:
     user_input = input("\nTú: ")
     if user_input.lower() in ['salir', 'exit']:
