@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Práctica: Fine-Tuning de LLM Local</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Source+Code+Pro:wght@400;600&display=swap');
+
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --error-bg: #ffebee;
+            --error-text: #c0392b;
+            --success-bg: #e8f5e9;
+            --success-text: #27ae60;
+            --code-bg: #f4f6f7;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #ecf0f1;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 210mm; /* Ancho A4 */
+            margin: 0 auto;
+            background-color: white;
+            padding: 20mm;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        /* Botón de impresión (no sale en el PDF) */
+        .no-print {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        button.print-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: background 0.3s;
+        }
+
+        button.print-btn:hover {
+            background-color: #2980b9;
+        }
+
+        header {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .header-info h1 {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+
+        .header-info h2 {
+            margin: 5px 0 0;
+            font-size: 16px;
+            color: #7f8c8d;
+            font-weight: 400;
+        }
+
+        .meta-data {
+            text-align: right;
+            font-size: 14px;
+        }
+
+        section {
+            margin-bottom: 25px;
+        }
+
+        h3 {
+            color: var(--primary-color);
+            border-left: 5px solid var(--accent-color);
+            padding-left: 10px;
+            margin-top: 30px;
+        }
+
+        h4 {
+            color: #444;
+            margin-bottom: 5px;
+        }
+
+        p {
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+
+        ul {
+            list-style-type: square;
+            margin-left: 20px;
+        }
+
+        .code-block {
+            background-color: var(--code-bg);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        .error-log {
+            background-color: var(--error-bg);
+            color: var(--error-text);
+            border-left: 4px solid var(--error-text);
+            padding: 10px;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 12px;
+            margin: 10px 0;
+        }
+
+        .solution-box {
+            background-color: var(--success-bg);
+            color: #1e6d42;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #c8e6c9;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 12px;
+            color: #95a5a6;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+
+        /* Estilos para impresión */
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                margin: 0;
+                width: 100%;
+                max-width: 100%;
+                padding: 0;
+            }
+            .no-print {
+                display: none;
+            }
+            .code-block, .error-log {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print">
+        <button class="print-btn" onclick="window.print()">🖨️ Guardar como PDF</button>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="header-info">
+                <h1>Documentación de Práctica</h1>
+                <h2>Implementación de Fine-Tuning de LLM en Entorno Local (Windows/AMD)</h2>
+            </div>
+            <div class="meta-data">
+                <p><strong>Materia:</strong> Inteligencia Artificial</p>
+                <p><strong>Fecha:</strong> 18 de Diciembre, 2024</p>
+                <p><strong>Autor:</strong> Benítez Gómez Josué Miguel</p>
+            </div>
+        </header>
+
+        <section>
+            <h3>1. Objetivo General</h3>
+            <p>
+                El objetivo de la práctica fue implementar un proceso de ajuste fino (Fine-Tuning) supervisado sobre un Modelo de Lenguaje Grande (LLM) utilizando un dataset personalizado (<code>.jsonl</code>) de tutoría de programación. El reto principal consistió en lograr la ejecución en un entorno local hostil para el aprendizaje profundo (Windows + GPU AMD), sin depender de herramientas externas de abstracción como Ollama, utilizando código Python puro y el ecosistema de Hugging Face.
+            </p>
+        </section>
+
+        <section>
+            <h3>2. Entorno de Desarrollo y Hardware</h3>
+            <p>El despliegue presentó desafíos significativos debido a la incompatibilidad nativa de las librerías estándar con la configuración de hardware disponible.</p>
+            <ul>
+                <li><strong>Sistema Operativo:</strong> Windows 11</li>
+                <li><strong>Procesador (CPU):</strong> Arquitectura x64</li>
+                <li><strong>Tarjeta Gráfica (GPU):</strong> AMD Radeon RX 6600</li>
+                <li><strong>Librerías Clave:</strong> <code>transformers</code>, <code>peft</code> (LoRA), <code>trl</code> (SFTTrainer), <code>datasets</code>.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>3. Cronología de Problemas (Troubleshooting)</h3>
+            <p>El desarrollo siguió un enfoque iterativo de resolución de errores, enfrentando múltiples capas de incompatibilidad.</p>
+
+            <h4>Fase 1: El "Infierno de las Dependencias"</h4>
+            <p>Al iniciar el entorno, surgieron conflictos entre las versiones modernas de Keras y la librería Transformers.</p>
+            <div class="error-log">ValueError: Your currently installed version of Keras is Keras 3, but this is not yet supported in Transformers.</div>
+            <p><strong>Solución:</strong> Se instaló el paquete puente <code>tf-keras</code> para mantener la compatibilidad legacy sin romper el entorno de TensorFlow existente.</p>
+
+            <h4>Fase 2: Inestabilidad de la API TRL</h4>
+            <p>La librería <code>trl</code> se actualizó recientemente, deprecando argumentos que la documentación oficial aún cita.</p>
+            <div class="error-log">TypeError: SFTTrainer.__init__() got an unexpected keyword argument 'max_seq_length'<br>
+            TypeError: SFTTrainer.__init__() got an unexpected keyword argument 'tokenizer'</div>
+            <p><strong>Solución:</strong> 
+                1. Migración de argumentos a la nueva clase <code>SFTConfig</code>.<br>
+                2. Cambio del parámetro <code>tokenizer</code> a <code>processing_class</code>.<br>
+                3. Eliminación de restricciones de longitud explícitas para usar los valores por defecto del modelo.
+            </p>
+
+            <h4>Fase 3: Formateo de Datos</h4>
+            <p>El entrenador fallaba al intentar procesar el dataset por lotes dentro de la función de formateo interna.</p>
+            <div class="error-log">AttributeError: 'list' object has no attribute 'endswith'</div>
+            <p><strong>Solución:</strong> Se implementó un pre-procesamiento manual con <code>dataset.map()</code>, formateando el texto antes de entregarlo al entrenador y eliminando la lógica ambigua del <code>SFTTrainer</code>.</p>
+
+            <h4>Fase 4: Bloqueo de Hardware (El reto de AMD en Windows)</h4>
+            <p>El entrenamiento se congelaba indefinidamente ("Deadlock") o no iniciaba.</p>
+            <div class="error-log">UserWarning: 'pin_memory' argument is set as true but no accelerator is found</div>
+            <p><strong>Diagnóstico:</strong> PyTorch en Windows no soporta aceleración nativa para tarjetas AMD (ROCm). El intento de multiprocesamiento saturaba la CPU.</p>
+            <div class="solution-box">
+                Solución Final:<br>
+                1. Forzar modo CPU: <code>use_cpu=True</code><br>
+                2. Desactivar multiprocesamiento: <code>dataloader_num_workers=0</code><br>
+                3. Usar precisión simple: <code>fp16=False</code> (La CPU no maneja bien la media precisión).
+            </div>
+        </section>
+
+        <section>
+            <h3>4. Implementación Exitosa</h3>
+            <p>Se sustituyó el modelo inicial <em>TinyLlama</em> por <strong>Qwen 2.5-0.5B-Instruct</strong> debido a su mejor arquitectura y eficiencia. A continuación, el fragmento clave del código final:</p>
+
+            <div class="code-block">
+# Configuración adaptada para Windows/CPU
+training_args = SFTConfig(
+    output_dir="./resultados_qwen",
+    num_train_epochs=3,
+    per_device_train_batch_size=1, # Lote mínimo para no saturar RAM
+    gradient_accumulation_steps=4,
+    learning_rate=1e-4,   
+    
+    # --- AJUSTES CRÍTICOS ---
+    bf16=False, fp16=False,    # Precisión completa (Float32)
+    use_cpu=True,              # Evita búsqueda de CUDA
+    dataloader_pin_memory=False,
+    dataloader_num_workers=0,  # Evita bloqueos en Windows
+    optim="adamw_torch"        # Optimizador compatible con CPU
+)
+            </div>
+        </section>
+
+        <section>
+            <h3>5. Resultados</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Métrica</th>
+                        <th>Valor Obtenido</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Modelo Base</td>
+                        <td>Qwen/Qwen2.5-0.5B-Instruct</td>
+                    </tr>
+                    <tr>
+                        <td>Tiempo de Entrenamiento</td>
+                        <td>~11 minutos (3 épocas)</td>
+                    </tr>
+                    <tr>
+                        <td>Training Loss Final</td>
+                        <td><strong>1.449</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Estado</td>
+                        <td>Convergencia Exitosa</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>El valor de pérdida (Loss) de 1.44 indica que el modelo logró aprender patrones del dataset de manera efectiva, a pesar de las limitaciones de hardware.</p>
+        </section>
+
+        <section>
+            <h3>6. Conclusión</h3>
+            <p>
+                La práctica demostró que es posible realizar <em>Fine-Tuning</em> de modelos de lenguaje modernos en hardware de consumo y sin soporte oficial de CUDA (NVIDIA), aunque requiere una configuración manual exhaustiva. Se aprendió la importancia de gestionar versiones de librerías volátiles (como <code>trl</code>) y de adaptar los pipelines de datos (Data Loaders) a las limitaciones del sistema operativo Windows cuando se trabaja con hardware AMD.
+            </p>
+        </section>
+
+        <footer>
+            Reporte generado automáticamente tras la ejecución exitosa del script <code>trainer.py</code>.
+        </footer>
+    </div>
+
+</body>
+</html>
