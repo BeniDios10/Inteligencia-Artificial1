@@ -1,0 +1,38 @@
+torch
+transformers
+peft
+datasets
+trl
+tf-keras
+accelerate
+bitsandbytes
+```
+    *Guarda este archivo en tu carpeta del proyecto antes de hacer el push.*
+
+2.  **Sube el código a GitHub:**
+    ```bash
+    git add .
+    git commit -m "Proyecto terminado con Qwen"
+    git push origin main
+    ```
+
+3.  **⚠️ EL PASO CRÍTICO: El Modelo Entrenado (USB / Drive)**
+    La carpeta `qwen_tutor_algoritmos_v2` contiene los pesos (adaptadores) de lo que aprendió tu IA.
+    * **No confíes en GitHub para esto.** A veces ignora archivos binarios o grandes.
+    * **Acción:** Copia la carpeta `qwen_tutor_algoritmos_v2` completa en una **USB** o súbela a Google Drive/OneDrive.
+    * También copia el **Reporte HTML** que generamos.
+
+---
+
+### Paso 2: En tu Laptop (Preparación)
+
+Haz esto en tu casa o en la cafetería **antes** de la clase (no uses el internet del salón, suele fallar descargando modelos).
+
+1.  **Clona/Actualiza el repo:**
+    ```bash
+    git pull origin main
+    ```
+2.  **Instala las librerías:**
+    Abre la terminal en la carpeta y ejecuta:
+    ```bash
+    pip install -r requirements.txt
