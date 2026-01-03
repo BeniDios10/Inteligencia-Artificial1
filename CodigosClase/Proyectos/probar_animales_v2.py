@@ -48,6 +48,6 @@ def predecir(ruta_imagen):
 # --- EJECUTAR PRUEBA ---
 if __name__ == "__main__":
     # CAMBIA ESTO
-    mi_foto = "C:\\Users\\284\\Desktop\\nuevas_imagenes\\Tortuga_cuello.jpg"
+    mi_foto = "C:\\Users\\284\\Desktop\\nuevas_imagenes\\tort5.jfif"
     
     predecir(mi_foto)

@@ -4,12 +4,12 @@ from peft import PeftModel
 
 # --- CONFIGURACIÓN ---
 BASE_MODEL = "Qwen/Qwen2.5-0.5B-Instruct"
-ADAPTER_DIR = "qwen_tutor_algoritmos_v2" # La carpeta donde se guardó tu entrenamiento
+ADAPTER_DIR = "qwen_tutor_algoritmos_v2" # La carpeta donde se guardó el entrenamiento
 
 print("1. Cargando el modelo base...")
 base_model = AutoModelForCausalLM.from_pretrained(
     BASE_MODEL,
-    torch_dtype=torch.float32, # Importante para tu CPU
+    torch_dtype=torch.float32, # Importante para el CPU
     device_map="cpu"
 )
 
@@ -44,13 +44,13 @@ def preguntar(pregunta):
     respuesta_limpia = respuesta_completa.split("### Respuesta esperada:\n")[-1]
     
     print("-" * 30)
-    print(f"🤖 TUTOR: {respuesta_limpia.strip()}")
+    print(f"TUTOR: {respuesta_limpia.strip()}")
     print("-" * 30)
 
 # Bucle de chat
 print("\nTutor Qwen cargado. Escribe 'salir' para terminar.")
 while True:
     user_input = input("\nTú: ")
-    if user_input.lower() in ['salir', 'exit']:
+    if user_input.lower() in ['salir', 'exit', 'quit', 'bye', 'adiós', 'huir', 'terminar']:
         break
     preguntar(user_input)
